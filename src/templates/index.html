@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+	<html lang="en">
+	<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Document</title>
+	</head>
+	<body>
+		<h1>Project: {{ project_name }}</h1>
+
+		{% if render_is_running %}
+			<h2>Status</h2>
+			<div>Rendering {{ active_render_file }}</div>
+			<div>Progress: {{ render_progress }}%</div>
+
+			<form method="post" action="/update-status" id="stop_render">
+				<input type="hidden" name="task" value="stop_render">
+				<button type="submit">Stop Render</button>
+			</form>
+		{% else %}
+			<h2>Start Render</h2>
+			<form method="post" action="/update-status" id="start-render">
+				<input type="hidden" name="task" value="start_render">
+				
+				<div>Render File</div>
+				<select name="render_file" id="render_files">
+					{% for filename in render_files %}
+						<option value="{{ filename }}">{{ filename }}</option>
+					{% endfor %}
+				</select>
+				
+				<div>Start-Frame:</div>
+				<input type="number" name="start_frame">
+				
+				<button type="submit">Start Render</button>
+			</form>
+		{% endif %}
+	</body>
+</html>
